@@ -1,0 +1,38 @@
+# Node
+node_modules/
+dist/
+.pnp
+.pnp.js
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+*.so
+venv/
+env/
+.env
+*.log
+
+# Build artifacts
+build/
+*.o
+*.a
+
+# Secrets
+.env
+*.env
+!.env.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Endee binary / C++ build (submodule handled separately)
+endee/

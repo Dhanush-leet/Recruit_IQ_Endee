@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  # ──────────────────────────────────────────────
+  # Endee OSS Vector Database
+  # Listens on http://localhost:8080/api/v1
+  # ──────────────────────────────────────────────
+  endee:
+    image: ghcr.io/endee-io/endee:latest
+    container_name: endee-vectordb
+    ports:
+      - "8080:8080"
+    environment:
+      NDD_NUM_THREADS: 0          # 0 = auto-detect CPU cores
+      NDD_AUTH_TOKEN: ""          # Leave blank for local dev (no auth)
+    volumes:
+      - endee-data:/data          # persist index data across restarts
+    restart: unless-stopped
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        max-file: "5"
+
+  # ──────────────────────────────────────────────
+  # FastAPI Backend Bridge (port 8000)
+  # ──────────────────────────────────────────────
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    container_name: recruitiq-api
+    ports:
+      - "8000:8000"
+    depends_on:
+      - endee
+    environment:
+      ENDEE_URL: http://endee:8080/api/v1
+      ENDEE_TOKEN: ""
+      GEMINI_API_KEY: ${GEMINI_API_KEY}
+    restart: unless-stopped
+
+volumes:
+  endee-data:
