@@ -13,7 +13,6 @@ __pycache__/
 *.so
 venv/
 env/
-.env
 *.log
 
 # Build artifacts
@@ -34,5 +33,11 @@ Thumbs.db
 .vscode/
 .idea/
 
-# Endee binary / C++ build (submodule handled separately)
-endee/
+# Endee binary / C++ build (keep Python SDK code, exclude C++ build)
+endee/endee-server/
+endee/*.so
+endee/*.dll
+endee/*.exe
+
+# Keep all Python source code in endee/recruitiq/
+!endee/recruitiq/
