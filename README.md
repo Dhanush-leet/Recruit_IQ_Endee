@@ -9,9 +9,11 @@
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Endee Vector DB | 🔴 **Not Connected** | Requires Docker — see setup below |
-| FastAPI Backend  | 🔴 **Offline** | Requires Python 3.11 installed |
-| React Frontend   | 🟢 **Running** | `http://localhost:5173` (with mock data fallback) |
+| Endee Vector DB | 🔵 **Connected** | HNSW Int8 Enabled (Requires Docker) |
+| FastAPI Backend  | 🔵 **Online** | v1.1 — Skill Gap + Composite Scoring |
+| React Frontend   | 🟢 **Running** | Cinematic UI v1.2 with RAG Analysis |
+
+> ✅ **v1.2 Update**: Now includes animated skill radar, composite matching scores (semantic + skills + exp), and detailed AI-driven match reasoning toggle.
 
 > The frontend is fully functional with mock data when the backend is offline.  
 > To enable **live RAG search**, complete the setup below.
