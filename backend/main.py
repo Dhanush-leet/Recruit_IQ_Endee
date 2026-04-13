@@ -30,9 +30,13 @@ async def startup():
 
 
 @app.get("/health")
-def health():
-    """Return Endee connection status and index stats."""
-    return get_index_stats()
+def health_check():
+    stats = get_index_stats()
+    return {
+        "backend": "online",
+        "endee_status": "online" if stats.get("status") == "connected" else "offline",
+        "details": stats
+    }
 
 
 @app.post("/upload")
