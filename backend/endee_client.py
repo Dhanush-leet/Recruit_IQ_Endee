@@ -21,9 +21,9 @@ def setup_indexes():
                 ef_con=128,                 # construction-time accuracy parameter
                 precision=Precision.INT8D,  # 4x memory saving, same recall
             )
-            print(f"[Endee] ✅ Created index: {name}  (dim={EMBED_DIM}, INT8D, cosine)")
+            print(f"[Endee] Created index: {name}  (dim={EMBED_DIM}, INT8D, cosine)")
         else:
-            print(f"[Endee] ♻️  Index already exists: {name}")
+            print(f"[Endee] Index already exists: {name}")
 
 
 def upsert_resume(vector_id: str, vector: list, metadata: dict):
@@ -98,6 +98,6 @@ def delete_index(name: str = INDEX_NAME):
     """Wipe and recreate the index (useful for demo resets)."""
     try:
         client.delete_index(name=name)
-        print(f"[Endee] 🗑️  Deleted index: {name}")
+        print(f"[Endee] Deleted index: {name}")
     except Exception:
         pass

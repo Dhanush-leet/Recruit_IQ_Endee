@@ -21,9 +21,12 @@ app.add_middleware(
 @app.on_event("startup")
 async def startup():
     """Create Endee indexes on first run (idempotent)."""
-    print("[RecruitIQ] 🚀 Starting up — connecting to Endee...")
-    setup_indexes()
-    print("[RecruitIQ] ✅ Ready!")
+    print("[RecruitIQ] Starting up -- connecting to Endee...")
+    try:
+        setup_indexes()
+        print("[RecruitIQ] Ready!")
+    except Exception as e:
+        print(f"[RecruitIQ] Warning: Could not connect to Endee vector database at startup. ({str(e)})")
 
 
 @app.get("/health")

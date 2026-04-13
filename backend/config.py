@@ -3,7 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-OPENAI_API_KEY  = os.getenv("OPENAI_API_KEY")
+OPENAI_API_KEY  = os.getenv("OPENAI_API_KEY", "dummy-key-for-local-testing")
 OPENAI_BASE_URL = os.getenv("OPENAI_BASE_URL", "https://api.together.xyz/v1")
 EMBED_MODEL     = os.getenv("EMBED_MODEL", "intfloat/multilingual-e5-large-instruct")
 EMBED_DIM       = int(os.getenv("EMBED_DIM", "1024"))
