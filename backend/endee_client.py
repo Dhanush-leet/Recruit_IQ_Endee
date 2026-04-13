@@ -9,7 +9,11 @@ client.set_base_url(ENDEE_URL)
 
 def setup_indexes():
     """Create both indexes if they don't exist yet. Call once at startup."""
-    existing = {idx["name"] for idx in (client.list_indexes() or [])}
+    try:
+        existing = {idx["name"] for idx in (client.list_indexes() or [])}
+    except Exception:
+        print("[Endee] Offline - Skipping index setup")
+        return
 
     for name in [INDEX_NAME, JD_INDEX_NAME]:
         if name not in existing:
@@ -63,14 +67,18 @@ def search_resumes(
     if min_exp > 0:
         filters = {"years_exp": {"$gte": min_exp}}
 
-    results = client.search(
-        index_name=INDEX_NAME,
-        query_vector=query_vector,
-        top_k=top_k,
-        filters=filters if filters else None,
-        include_metadata=True,
-    )
-    return results or []
+    try:
+        results = client.search(
+            index_name=INDEX_NAME,
+            query_vector=query_vector,
+            top_k=top_k,
+            filters=filters if filters else None,
+            include_metadata=True,
+        )
+        return results or []
+    except Exception as e:
+        print(f"[Endee] Search failed (Offline): {e}")
+        return []
 
 
 def get_index_stats() -> dict:

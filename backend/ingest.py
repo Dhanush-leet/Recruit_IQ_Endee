@@ -46,7 +46,10 @@ def ingest_resume(pdf_bytes: bytes, filename: str) -> dict:
     meta = parse_metadata(text, filename)
     vec  = embed(text[:2000])         # embed first 2000 chars (most relevant for ranking)
     vid  = make_id(filename + text[:100])
-    upsert_resume(vid, vec, meta)
+    try:
+        upsert_resume(vid, vec, meta)
+    except Exception as e:
+        print(f"[Endee] Indexing failed (Offline): {e}")
     return {
         "id":           vid,
         "name":         meta["name"],
