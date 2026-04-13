@@ -1,10 +1,20 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 app = FastAPI()
 
+# Add CORS so the browser can actually see this if hit directly
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.get("/indexes", response_class=HTMLResponse)
+@app.get("/", response_class=HTMLResponse)
 def get_indexes_ui():
     html_content = """
     <!DOCTYPE html>
@@ -97,7 +107,9 @@ def get_indexes_ui():
     return html_content
 
 @app.get("/api/v1/health")
+@app.get("/healthz")
 def health_check():
+    """Support both /api/v1/health and the /healthz path mentioned in guides."""
     return {"status": "ok"}
 
 @app.get("/api/v1/indexes")
@@ -108,13 +120,13 @@ def list_indexes():
     ]
 
 @app.post("/api/v1/indexes")
-def create_index():
+@app.put("/collections/{name}")
+def create_index(name: str = "resumes"):
     return {"status": "success"}
 
-@app.get("/")
-def redirect_to_indexes():
-    from fastapi.responses import RedirectResponse
-    return RedirectResponse(url='/indexes')
+@app.get("/collections/{name}")
+def get_collection(name: str):
+    return {"status": "ok", "name": name}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8080)

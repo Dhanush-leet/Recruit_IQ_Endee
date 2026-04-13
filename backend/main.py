@@ -33,20 +33,27 @@ async def startup():
 def health_check():
     stats = get_index_stats()
     return {
-        "backend": "online",
+        "backend":      "online",
         "endee_status": "online" if stats.get("status") == "connected" else "offline",
-        "details": stats
+        "endee_port":   8080,
+        "details":      stats
     }
 
 
 @app.post("/upload")
+@app.post("/upload-resume")
 async def upload_resume(file: UploadFile = File(...)):
     """Ingest a single PDF resume into Endee vector DB."""
     if not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported")
     content = await file.read()
     result  = ingest_resume(content, file.filename)
-    return {"status": "indexed", **result}
+    return {
+        "status": "success",
+        "filename": file.filename,
+        "message": "Resume ingested into Endee DB successfully ✅",
+        **result
+    }
 
 
 @app.post("/upload/bulk")

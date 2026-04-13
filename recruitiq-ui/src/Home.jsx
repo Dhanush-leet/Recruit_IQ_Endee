@@ -116,7 +116,7 @@ export default function Home() {
         const form = new FormData();
         form.append('file', file);
         try {
-            const res  = await fetch('http://127.0.0.1:8000/upload', { method: 'POST', body: form });
+            const res  = await fetch('http://127.0.0.1:8000/upload-resume', { method: 'POST', body: form });
             const data = await res.json();
             setUploadStatus({ name: data.name || file.name, status: 'done', skills: data.skills_found });
         } catch {
