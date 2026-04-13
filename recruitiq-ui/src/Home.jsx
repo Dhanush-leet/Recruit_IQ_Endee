@@ -101,7 +101,7 @@ export default function Home() {
     // ── Check backend health on mount ────────────────────────────
     const checkHealth = async () => {
         try {
-            const res = await fetch('http://127.0.0.1:8000/health');
+            const res = await fetch('http://localhost:8000/health');
             const d   = await res.json();
             setDbConnected(d.endee_status === 'online');
         } catch {
@@ -116,7 +116,7 @@ export default function Home() {
         const form = new FormData();
         form.append('file', file);
         try {
-            const res  = await fetch('http://127.0.0.1:8000/upload-resume', { method: 'POST', body: form });
+            const res  = await fetch('http://localhost:8000/upload-resume', { method: 'POST', body: form });
             const data = await res.json();
             setUploadStatus({ name: data.name || file.name, status: 'done', skills: data.skills_found });
         } catch {
@@ -129,7 +129,7 @@ export default function Home() {
         if (!queryText.trim()) return;
         setIsSearching(true);
         try {
-            const res = await fetch('http://127.0.0.1:8000/search', {
+            const res = await fetch('http://localhost:8000/search', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
